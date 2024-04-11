@@ -49,106 +49,113 @@ def selection():
         gender = "Female"
 
 def search():
-    text = Search.get() # taking input form entry box
-    Clear() # to clear all the data already available in entry box and other
-    saveButton.config(state='disable') # after clicking on search, save button will disable
-
-    file = openpyxl.load_workbook('Student_data.xlsx')
-    sheet = file.active
-
-    for row in sheet.rows:
-        if row[0].value == int(text):
-            name = row[0]
-            reg_no_position = str(name)[14:-1] # show the position like A2, A3 ... n
-            reg_number = str(name)[15:-1] # show the number like 2, 3 ... n
-
     try:
+        text = Search.get() # taking input form entry box
+        Clear() # to clear all the data already available in entry box and other
+        saveButton.config(state='disable') # after clicking on search, save button will disable
+
+        file = openpyxl.load_workbook('Student_data.xlsx')
+        sheet = file.active
+
+        for row in sheet.rows:
+            if row[0].value == int(text):
+                name = row[0]
+                reg_no_position = str(name)[14:-1] # show the position like A2, A3 ... n
+                reg_number = str(name)[15:-1] # show the number like 2, 3 ... n
+
+        try:
+            pass
+        except:
+            messagebox.showerror('Invalid', 'Invalid registration number!')
+
+        x1 = sheet.cell(row=int(reg_number), column=1).value
+        x2 = sheet.cell(row=int(reg_number), column=2).value
+        x3 = sheet.cell(row=int(reg_number), column=3).value
+        x4 = sheet.cell(row=int(reg_number), column=4).value
+        x5 = sheet.cell(row=int(reg_number), column=5).value
+        x6 = sheet.cell(row=int(reg_number), column=6).value
+        x7 = sheet.cell(row=int(reg_number), column=7).value
+        x8 = sheet.cell(row=int(reg_number), column=8).value
+        x9 = sheet.cell(row=int(reg_number), column=9).value
+        x10 = sheet.cell(row=int(reg_number), column=10).value
+        x11 = sheet.cell(row=int(reg_number), column=11).value
+        x12 = sheet.cell(row=int(reg_number), column=12).value
+
+        Registation.set(x1)
+        Name.set(x2)
+        Class.set(x3)
+
+        if x4 == 'Famale':
+            R2.select()
+        else:
+            R1.select()
+
+        DateOfBirth.set(x5)
+        Date.set(x6)
+        Religion.set(x7)
+        Skill.set(x8)
+        fatherName.set(x9)
+        motherName.set(x10)
+        fatherOccumpation.set(x11)
+        motherOccumpation.set(x12)
+
+        img = (Image.open("Student_images/"+str(x1)+".jpg"))
+        resized_imaged = img.resize((190, 190))
+        photo2 = ImageTk.PhotoImage(resized_imaged)
+        lbl.config(image=photo2)
+        lbl.image=photo2
+
+    except ValueError:
         pass
-    except:
-        messagebox.showerror('Invalid', 'Invalid registration number!')
-
-    x1 = sheet.cell(row=int(reg_number), column=1).value
-    x2 = sheet.cell(row=int(reg_number), column=2).value
-    x3 = sheet.cell(row=int(reg_number), column=3).value
-    x4 = sheet.cell(row=int(reg_number), column=4).value
-    x5 = sheet.cell(row=int(reg_number), column=5).value
-    x6 = sheet.cell(row=int(reg_number), column=6).value
-    x7 = sheet.cell(row=int(reg_number), column=7).value
-    x8 = sheet.cell(row=int(reg_number), column=8).value
-    x9 = sheet.cell(row=int(reg_number), column=9).value
-    x10 = sheet.cell(row=int(reg_number), column=10).value
-    x11 = sheet.cell(row=int(reg_number), column=11).value
-    x12 = sheet.cell(row=int(reg_number), column=12).value
-
-    Registation.set(x1)
-    Name.set(x2)
-    Class.set(x3)
-
-    if x4 == 'Famale':
-        R2.select()
-    else:
-        R1.select()
-
-    DateOfBirth.set(x5)
-    Date.set(x6)
-    Religion.set(x7)
-    Skill.set(x8)
-    fatherName.set(x9)
-    motherName.set(x10)
-    fatherOccumpation.set(x11)
-    motherOccumpation.set(x12)
-
-    img = (Image.open("Student_images/"+str(x1)+".jpg"))
-    resized_imaged = img.resize((190, 190))
-    photo2 = ImageTk.PhotoImage(resized_imaged)
-    lbl.config(image=photo2)
-    lbl.image=photo2
 
 def Update():
-    R1 = Registation.get()
-    N1 = Name.get()
-    C1 = Class.get()
-    selection()
-    G1 = gender
-    D2 = DateOfBirth.get()
-    D1 = Date.get()
-    RE1 = Religion.get()
-    S1 = Skill.get()
-    FN = fatherName.get()
-    MN = motherName.get()
-    FO = fatherOccumpation.get()
-    MO = motherOccumpation.get()
-
-    file = openpyxl.load_workbook('Student_data.xlsx')
-    sheet = file.active
-
-    for row in sheet.rows:
-        if row[0].value == R1:
-            name = row[0]
-            reg_no_position=str(name)[14:-1]
-            reg_number = str(name)[15:-1]
-
-    ## sheet.cell(column=1, row=int(reg_number), value=R1)
-    sheet.cell(column=2, row=int(reg_number), value=N1)
-    sheet.cell(column=3, row=int(reg_number), value=C1)
-    sheet.cell(column=4, row=int(reg_number), value=G1)
-    sheet.cell(column=5, row=int(reg_number), value=D2)
-    sheet.cell(column=6, row=int(reg_number), value=D1)
-    sheet.cell(column=7, row=int(reg_number), value=RE1)
-    sheet.cell(column=8, row=int(reg_number), value=S1)
-    sheet.cell(column=9, row=int(reg_number), value=FN)
-    sheet.cell(column=10, row=int(reg_number), value=MN)
-    sheet.cell(column=11, row=int(reg_number), value=FO)
-    sheet.cell(column=12, row=int(reg_number), value=MO)
-
-    file.save(r'Student_data.xlsx')
-
     try:
-        img.save("Student_images/"+str(R1)+".jpg")
-    except:
-        pass
-    messagebox.showinfo('Update', 'Updated succesfully')
-    Clear()
+        R1 = Registation.get()
+        N1 = Name.get()
+        C1 = Class.get()
+        selection()
+        G1 = gender
+        D2 = DateOfBirth.get()
+        D1 = Date.get()
+        RE1 = Religion.get()
+        S1 = Skill.get()
+        FN = fatherName.get()
+        MN = motherName.get()
+        FO = fatherOccumpation.get()
+        MO = motherOccumpation.get()
+
+        file = openpyxl.load_workbook('Student_data.xlsx')
+        sheet = file.active
+
+        for row in sheet.rows:
+            if row[0].value == R1:
+                name = row[0]
+                reg_no_position=str(name)[14:-1]
+                reg_number = str(name)[15:-1]
+
+        ## sheet.cell(column=1, row=int(reg_number), value=R1)
+        sheet.cell(column=2, row=int(reg_number), value=N1)
+        sheet.cell(column=3, row=int(reg_number), value=C1)
+        sheet.cell(column=4, row=int(reg_number), value=G1)
+        sheet.cell(column=5, row=int(reg_number), value=D2)
+        sheet.cell(column=6, row=int(reg_number), value=D1)
+        sheet.cell(column=7, row=int(reg_number), value=RE1)
+        sheet.cell(column=8, row=int(reg_number), value=S1)
+        sheet.cell(column=9, row=int(reg_number), value=FN)
+        sheet.cell(column=10, row=int(reg_number), value=MN)
+        sheet.cell(column=11, row=int(reg_number), value=FO)
+        sheet.cell(column=12, row=int(reg_number), value=MO)
+
+        file.save(r'Student_data.xlsx')
+
+        try:
+            img.save("Student_images/"+str(R1)+".jpg")
+        except:
+            pass
+        messagebox.showinfo('Update', 'Updated succesfully')
+        Clear()
+    except UnboundLocalError:
+        messagebox.showinfo('INFO', 'Before update fill all information!!')
 
 def Exit():
     root.destroy()
