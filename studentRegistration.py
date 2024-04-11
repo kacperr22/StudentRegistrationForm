@@ -11,7 +11,7 @@ import openpyxl, xlrd
 from openpyxl import Workbook
 import pathlib
 
-background = "#06283D"  # background
+background = "#89d6fb"  # background
 framebg = "#EDEDED"
 framefg = "#06283D"
 
@@ -40,7 +40,6 @@ else:
     sheet['L1'] = "Occupation"
 
     file.save('Student_data.xlsx')
-
 def selection():
     global gender
     value = radio.get()
@@ -48,6 +47,108 @@ def selection():
         gender = "Male"
     else:
         gender = "Female"
+
+def search():
+    text = Search.get() # taking input form entry box
+    Clear() # to clear all the data already available in entry box and other
+    saveButton.config(state='disable') # after clicking on search, save button will disable
+
+    file = openpyxl.load_workbook('Student_data.xlsx')
+    sheet = file.active
+
+    for row in sheet.rows:
+        if row[0].value == int(text):
+            name = row[0]
+            reg_no_position = str(name)[14:-1] # show the position like A2, A3 ... n
+            reg_number = str(name)[15:-1] # show the number like 2, 3 ... n
+
+    try:
+        pass
+    except:
+        messagebox.showerror('Invalid', 'Invalid registration number!')
+
+    x1 = sheet.cell(row=int(reg_number), column=1).value
+    x2 = sheet.cell(row=int(reg_number), column=2).value
+    x3 = sheet.cell(row=int(reg_number), column=3).value
+    x4 = sheet.cell(row=int(reg_number), column=4).value
+    x5 = sheet.cell(row=int(reg_number), column=5).value
+    x6 = sheet.cell(row=int(reg_number), column=6).value
+    x7 = sheet.cell(row=int(reg_number), column=7).value
+    x8 = sheet.cell(row=int(reg_number), column=8).value
+    x9 = sheet.cell(row=int(reg_number), column=9).value
+    x10 = sheet.cell(row=int(reg_number), column=10).value
+    x11 = sheet.cell(row=int(reg_number), column=11).value
+    x12 = sheet.cell(row=int(reg_number), column=12).value
+
+    Registation.set(x1)
+    Name.set(x2)
+    Class.set(x3)
+
+    if x4 == 'Famale':
+        R2.select()
+    else:
+        R1.select()
+
+    DateOfBirth.set(x5)
+    Date.set(x6)
+    Religion.set(x7)
+    Skill.set(x8)
+    fatherName.set(x9)
+    motherName.set(x10)
+    fatherOccumpation.set(x11)
+    motherOccumpation.set(x12)
+
+    img = (Image.open("Student_images/"+str(x1)+".jpg"))
+    resized_imaged = img.resize((190, 190))
+    photo2 = ImageTk.PhotoImage(resized_imaged)
+    lbl.config(image=photo2)
+    lbl.image=photo2
+
+def Update():
+    R1 = Registation.get()
+    N1 = Name.get()
+    C1 = Class.get()
+    selection()
+    G1 = gender
+    D2 = DateOfBirth.get()
+    D1 = Date.get()
+    RE1 = Religion.get()
+    S1 = Skill.get()
+    FN = fatherName.get()
+    MN = motherName.get()
+    FO = fatherOccumpation.get()
+    MO = motherOccumpation.get()
+
+    file = openpyxl.load_workbook('Student_data.xlsx')
+    sheet = file.active
+
+    for row in sheet.rows:
+        if row[0].value == R1:
+            name = row[0]
+            reg_no_position=str(name)[14:-1]
+            reg_number = str(name)[15:-1]
+
+    ## sheet.cell(column=1, row=int(reg_number), value=R1)
+    sheet.cell(column=2, row=int(reg_number), value=N1)
+    sheet.cell(column=3, row=int(reg_number), value=C1)
+    sheet.cell(column=4, row=int(reg_number), value=G1)
+    sheet.cell(column=5, row=int(reg_number), value=D2)
+    sheet.cell(column=6, row=int(reg_number), value=D1)
+    sheet.cell(column=7, row=int(reg_number), value=RE1)
+    sheet.cell(column=8, row=int(reg_number), value=S1)
+    sheet.cell(column=9, row=int(reg_number), value=FN)
+    sheet.cell(column=10, row=int(reg_number), value=MN)
+    sheet.cell(column=11, row=int(reg_number), value=FO)
+    sheet.cell(column=12, row=int(reg_number), value=MO)
+
+    file.save(r'Student_data.xlsx')
+
+    try:
+        img.save("Student_images/"+str(R1)+".jpg")
+    except:
+        pass
+    messagebox.showinfo('Update', 'Updated succesfully')
+    Clear()
 
 def Exit():
     root.destroy()
@@ -150,21 +251,20 @@ def Save():
 
 
 
-
 # create top frames
 Label(root, text="Email: kacper.kluge@gmail.com", width=10, height=2, bg="white", anchor='e').pack(side=TOP, fill=X)
-Label(root, text="STUDENT REGISTRATION", width=10, height=2, bg="#c36464", fg="#fff",
-      font='arail 20 bold').pack(side=TOP, fill=X)
+Label(root, text="STUDENT REGISTRATION", width=10, height=2, bg="#01303f", fg="#fff",
+      font='Arial 20 bold').pack(side=TOP, fill=X)
 
 # create search box to update
 Search = StringVar()
 Entry(root, textvariable=Search, width=15, bd=2, font='arail 20').place(x=820, y=50)
 imageicon3 = PhotoImage(file="Images/search.png")
-Srch = Button(root, text="Search", compound=LEFT, image=imageicon3, width=123, bg='#68ddfa', font='arial 12 bold')
+Srch = Button(root, text="Search", compound=LEFT, image=imageicon3, width=123, bg='#02a9f7', font='arial 12 bold', command=search)
 Srch.place(x=1060, y=48)
 
 imageicon4 = PhotoImage(file="Images/Layer 4.png")
-Update_button = Button(root, image=imageicon4, bg='#c36464')
+Update_button = Button(root, image=imageicon4, bg='#02a9f7', command=Update)
 Update_button.place(x=110, y=46)
 
 # Registation and date
@@ -191,13 +291,13 @@ labelframe1 = LabelFrame(root, text="Student details", font=20, bd=2, width=900,
                          relief=GROOVE)
 labelframe1.place(x=30, y=190)
 
-Label(labelframe1, text="Full Name: ", font='arial 13', bg=framebg, fg=framefg).place(x=30, y=50)
-Label(labelframe1, text="Date of Birth: ", font='arial 13', bg=framebg, fg=framefg).place(x=30, y=100)
-Label(labelframe1, text="Gender: ", font='arial 13', bg=framebg, fg=framefg).place(x=30, y=150)
+Label(labelframe1, text="Full Name: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=30, y=50)
+Label(labelframe1, text="Date of Birth: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=30, y=100)
+Label(labelframe1, text="Gender: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=30, y=150)
 
-Label(labelframe1, text="Class: ", font='arial 13', bg=framebg, fg=framefg).place(x=500, y=50)
-Label(labelframe1, text="Religion: ", font='arial 13', bg=framebg, fg=framefg).place(x=500, y=100)
-Label(labelframe1, text="Skills: ", font='arial 13', bg=framebg, fg=framefg).place(x=500, y=150)
+Label(labelframe1, text="Class: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=500, y=50)
+Label(labelframe1, text="Religion: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=500, y=100)
+Label(labelframe1, text="Skills: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=500, y=150)
 
 Name = StringVar()
 name_entry = Entry(labelframe1, textvariable=Name, width=20, font='arail 10')
@@ -232,27 +332,27 @@ labelframe2 = LabelFrame(root, text="Parent's details", font=20, bd=2, width=900
                          relief=GROOVE)
 labelframe2.place(x=30, y=460)
 
-Label(labelframe2, text="Father's Name: ", font='arial 13', bg=framebg, fg=framefg).place(x=30, y=50)
-Label(labelframe2, text="Occupation: ", font='arial 13', bg=framebg, fg=framefg).place(x=30, y=100)
+Label(labelframe2, text="Father's Name: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=30, y=50)
+Label(labelframe2, text="Occupation: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=30, y=100)
 
 fatherName = StringVar()
 fatherName_entry = Entry(labelframe2, textvariable=fatherName, width=20, font='arial 10')
-fatherName_entry.place(x=150, y=50)
+fatherName_entry.place(x=160, y=50)
 
 fatherOccumpation = StringVar()
 fatherOccupation_entry = Entry(labelframe2, textvariable=fatherOccumpation, width=20, font='arial 10')
-fatherOccupation_entry.place(x=150, y=100)
+fatherOccupation_entry.place(x=160, y=100)
 
-Label(labelframe2, text="Mother's Name: ", font='arial 13', bg=framebg, fg=framefg).place(x=500, y=50)
-Label(labelframe2, text="Occupation: ", font='arial 13', bg=framebg, fg=framefg).place(x=500, y=100)
+Label(labelframe2, text="Mother's Name: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=500, y=50)
+Label(labelframe2, text="Occupation: ", font='arial 13 bold', bg=framebg, fg=framefg).place(x=500, y=100)
 
 motherName = StringVar()
 motherName_entry = Entry(labelframe2, textvariable=motherName, width=20, font='arial 10')
-motherName_entry.place(x=620, y=50)
+motherName_entry.place(x=630, y=50)
 
 motherOccumpation = StringVar()
 motherOccupation_entry = Entry(labelframe2, textvariable=motherOccumpation, width=20, font='arial 10')
-motherOccupation_entry.place(x=620, y=100)
+motherOccupation_entry.place(x=630, y=100)
 
 # image
 imageFrame = Frame(root, bd=3, bg='black', width=200, height=200, relief=GROOVE)
